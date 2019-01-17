@@ -60,6 +60,7 @@ class Snippet(models.Model):
 
 	class Meta:
 		ordering = ['-created_on']
+		
 			
 
 	def highlight(self):
