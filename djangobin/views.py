@@ -1,7 +1,9 @@
-from django.shortcuts import HttpResponse, render, render_to_response
+from django.shortcuts import HttpResponse, render, render_to_response,redirect
 import datetime
 from django import template
 from django.conf import settings
+from django.contrib import messages
+from .forms import LanguageForm
 
 def index(request):
 	return HttpResponse("<p>Hello Django</p>")
@@ -36,6 +38,16 @@ def today_is(request):
 def profile(request, username):
 	return HttpResponse("<p>Profile page of #{}</p>".format(username))
 
+def add_lang(request):
+	if request.POST:
+		f = LanguageForm(request.POST)
+		if f.is_valid():
+			lang = f.save()
+			messages.add_message(request, messages.INFO, "Language saved")
+			return redirect('djangobin:add_lang')
+	else:
+		f = LanguageForm()
+	return render(request,'djangobin/add_lang.html', {'form':f} )
 
 def book_category(request, category='sci-fi'):
 	return HttpResponse("<p>Books in {} category</p>".format(category))
